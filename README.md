@@ -1,5 +1,5 @@
 # Magellanic.Sensors.HMC5883L
-This is a C# implementation of code whick integrates the HMC5883L digital compass sensor with Windows 10 IoT Core on the Raspberry Pi 3.
+This is a C# implementation of code which integrates the HMC5883L digital compass sensor with Windows 10 IoT Core on the Raspberry Pi 3.
 
 ## Getting started
 To build this project, you'll need the Magellanic.I2C project also (this is a NuGet package which is referenced in the project, so you may need to restore NuGet packages in your solution).
