@@ -28,9 +28,9 @@ namespace Magellanic.Sensors.HMC5883L
 
         public override byte[] GetDeviceId()
         {
-            byte[] identificationBufferA = new byte[1];
-            byte[] identificationBufferB = new byte[1];
-            byte[] identificationBufferC = new byte[1];
+            var identificationBufferA = new byte[1];
+            var identificationBufferB = new byte[1];
+            var identificationBufferC = new byte[1];
 
             this.Slave.WriteRead(IdentificationRegisterA, identificationBufferA);
             this.Slave.WriteRead(IdentificationRegisterB, identificationBufferB);
@@ -53,17 +53,17 @@ namespace Magellanic.Sensors.HMC5883L
 
             this.Slave.WriteRead(FirstDataRegister, compassData);
 
-            var r = new RawData();
+            var rawDirectionData = new RawData();
 
-            short xReading = (short)((compassData[0] << 8) | compassData[1]);
-            short zReading = (short)((compassData[2] << 8) | compassData[3]);
-            short yReading = (short)((compassData[4] << 8) | compassData[5]);
+            var xReading = (short)((compassData[0] << 8) | compassData[1]);
+            var zReading = (short)((compassData[2] << 8) | compassData[3]);
+            var yReading = (short)((compassData[4] << 8) | compassData[5]);
 
-            r.X = xReading;
-            r.Y = yReading;
-            r.Z = zReading;
+            rawDirectionData.X = xReading;
+            rawDirectionData.Y = yReading;
+            rawDirectionData.Z = zReading;
 
-            return r;
+            return rawDirectionData;
         }
 
         public struct RawData
