@@ -4,24 +4,44 @@ This is a C# implementation of code which integrates the HMC5883L digital compas
 ## Getting started
 To build this project, you'll need the Magellanic.I2C project also (this is a NuGet package which is referenced in the project, so you may need to restore NuGet packages in your solution).
 
-You should reference the Magellanic.Sensors.HMC5883L in your Visual Studio solution. The HMC5883L can be used with the following sample code:
+You should reference the Magellanic.Sensors.HMC5883L in your Visual Studio solution. The HMC5883L can be used with the following sample code in a standard Windows 10 UWP app:
 
 ```C#
-var compass = new HMC5883L();
-
-await compass.Initialize();
-            
-if (compass.IsConnected())
+public sealed partial class MainPage : Page
 {
-    compass.SetOperatingMode(OperatingMode.CONTINUOUS_OPERATING_MODE);
-
-    while (true)
+    public MainPage()
     {
-        var direction = compass.GetRawData();
+        this.InitializeComponent();
 
-        Debug.WriteLine($"X = {direction.X}, Y = {direction.Y}, Z = {direction.Z}");
+        Loaded += MainPage_Loaded;
+    }
+
+    private async void MainPage_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+    {
+        try
+        {
+            var compass = new HMC5883L();
+
+            await compass.Initialize();
+            
+            if (compass.IsConnected())
+            {
+                compass.SetOperatingMode(OperatingMode.CONTINUOUS_OPERATING_MODE);
+
+                while (true)
+                {
+                    var direction = compass.GetRawData();
+
+                    Debug.WriteLine($"X = {direction.X}, Y = {direction.Y}, Z = {direction.Z}");
                     
-        Task.Delay(1000).Wait();
+                    Task.Delay(1000).Wait();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex.Message);
+        }
     }
 }
 ```
